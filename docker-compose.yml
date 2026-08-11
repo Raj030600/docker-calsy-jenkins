@@ -1,0 +1,10 @@
+version: "3.9"
+
+services:
+  docker_casly:
+    image: docker_calsy
+    stdin_open: true
+    tty: true
+
+  nginx:
+    image: nginx
