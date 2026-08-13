@@ -46,7 +46,7 @@ def calculate():
 # Automated tests for Jenkins
 def run_tests():
     print("\n===== Running Calculator Tests =====")
-    print("Jenkins webhook test")
+    print("THIS CODE CAME FROM GITHUB")
     
 
     test_cases = [
