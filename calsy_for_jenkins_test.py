@@ -2,6 +2,7 @@
 
 def calculate():
     print("\n===== Python Calculator =====")
+    print("Jenkins webhook test")
 
     try:
         num1 = float(input("Enter first number: "))
