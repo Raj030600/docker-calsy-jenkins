@@ -25,8 +25,30 @@ pipeline {
 		
 		stage('Run Docker Container') {
 			steps {
-				bat 'docker run -d --name docker_calsy_container docker_calsy'
-			}
-		}
+				bat '''
+					docker run -d --name docker_calsy_container docker_calsy
+					timeout /t 5 /nobreak
+					
+					echo ===== Container Status =====
+					docker ps -a
+					
+					echo ===== Container Logs =====
+					docker logs docker_calsy_container
+					
+					echo ===== Container Exit Code =====
+					docker inspect docker_calsy_container --format "{{.State.ExitCode}}"
+					
+					echo ===== Checking application exit code =====
+					for /f %%i in ('docker inspect docker_calsy_container --format "{{.State.ExitCode}}"') do set EXIT_CODE=%%i
+
+					echo Application Exit Code: %EXIT_CODE%
+
+						if not "%EXIT_CODE%"=="0" (
+						echo ERROR: Application failed inside Docker container!
+						exit /b 1
+						)
+
+            echo Application completed successfully.
+        '''
     }
 }
