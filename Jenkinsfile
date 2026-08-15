@@ -27,7 +27,7 @@ pipeline {
 			steps {
 				bat '''
 					docker run -d --name docker_calsy_container docker_calsy
-					timeout /t 5 /nobreak
+					ping 127.0.0.1 -n 6 > nul
 					
 					echo ===== Container Status =====
 					docker ps -a
@@ -51,6 +51,11 @@ pipeline {
             echo Application completed successfully.
         '''
 				}
+		}
+		post {
+			always {
+				bat 'docker rm -f docker_calsy_container'
+			}
 		}
 	}
 }
