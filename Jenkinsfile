@@ -25,7 +25,7 @@ pipeline {
 		
 		stage('Run Docker Container') {
 			steps {
-				bat 'docker run -d --name docker_calsy_container docker_calsy'
+				bat 'docker run -d --name docker_calsy_container docker_calsy.py'
 			}
 		}
     }
