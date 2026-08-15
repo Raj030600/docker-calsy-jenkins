@@ -23,42 +23,11 @@ pipeline {
             }
         }
 		
-		stage('Run Docker Container') {
-			steps {
-				bat '''
-					docker run -d --name docker_calsy_container docker_calsy
-					ping 127.0.0.1 -n 6 > nul
-					
-					echo ===== Container Status =====
-					docker ps -a
-					
-					echo ===== Container Logs =====
-					docker logs docker_calsy_container
-					
-					echo ===== Container Exit Code =====
-					docker inspect docker_calsy_container --format "{{.State.ExitCode}}"
-					
-					echo ===== Checking application exit code =====
-					for /f %%i in ('docker inspect docker_calsy_container --format "{{.State.ExitCode}}"') do set EXIT_CODE=%%i
-
-					echo Application Exit Code: %EXIT_CODE%
-
-						if not "%EXIT_CODE%"=="0" (
-						echo ERROR: Application failed inside Docker container!
-						exit /b 1
-						)
-
-            echo Application completed successfully.
-        '''
-				}
-		}
-
-	}
-
-	post {
-		always {
-			bat 'docker rm -f docker_calsy_container'
-		}
+        stage('Test Docker Image') {
+            steps {
+                bat 'docker run --rm docker_calsy --test'
+            }
+        }
 	}
 
 }
