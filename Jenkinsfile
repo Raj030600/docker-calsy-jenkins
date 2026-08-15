@@ -19,13 +19,13 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                bat 'docker build -t docker_calsy .'
+                bat 'docker build -t docker_calsy:build-%BUILD_NUMBER% .'
             }
         }
 		
         stage('Test Docker Image') {
             steps {
-                bat 'docker run --rm docker_calsy --test'
+                bat 'docker run --rm docker_calsy:build-%BUILD_NUMBER% --test'
             }
         }
 	}
