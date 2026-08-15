@@ -22,5 +22,11 @@ pipeline {
                 bat 'docker build -t docker_calsy .'
             }
         }
+		
+		stage('Run Docker Container') {
+			steps {
+				bat 'docker run -d --name docker_calsy_container docker_calsy'
+			}
+		}
     }
 }
