@@ -38,7 +38,7 @@ pipeline {
 					echo ===== Container Exit Code =====
 					docker inspect docker_calsy_container --format "{{.State.ExitCode}}"
 					
-					echo ===== Checking application exit code =====
+					echo ===== Checking application exit codee =====
 					for /f %%i in ('docker inspect docker_calsy_container --format "{{.State.ExitCode}}"') do set EXIT_CODE=%%i
 
 					echo Application Exit Code: %EXIT_CODE%
