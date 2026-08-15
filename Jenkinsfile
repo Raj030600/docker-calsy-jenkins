@@ -50,5 +50,7 @@ pipeline {
 
             echo Application completed successfully.
         '''
-    }
+				}
+		}
+	}
 }
