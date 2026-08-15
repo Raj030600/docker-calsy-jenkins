@@ -52,10 +52,12 @@ pipeline {
         '''
 				}
 		}
+
+	}
+}
+
 		post {
 			always {
 				bat 'docker rm -f docker_calsy_container'
 			}
 		}
-	}
-}
