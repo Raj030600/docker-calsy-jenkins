@@ -50,6 +50,35 @@ pipeline {
 				'''
 			}
 		}
+		
+		stage('Deploy API') {
+			steps {
+				bat '''
+				echo ===== Cleaning Previous Deployment =====
+
+				docker rm -f calsy-api-deployment 2>nul || echo No previous deployment
+
+				echo ===== Starting API Container =====
+
+				docker run -d ^
+				--name calsy-api-deployment ^
+				-p 5000:8080 ^
+				%IMAGE_NAME%:build-%BUILD_NUMBER%
+
+				echo ===== Waiting for API =====
+				ping 127.0.0.1 -n 6 >nul
+
+				echo ===== Checking Deployment =====
+				docker ps
+
+				echo ===== Testing Deployed API =====
+				curl.exe -f "http://localhost:5000/calculate?a=20&b=4&op=/"
+
+				echo.
+				echo ===== Deployment Successful =====
+				'''
+			}
+		}
 
         stage('Login to Docker Hub') {
             steps {
