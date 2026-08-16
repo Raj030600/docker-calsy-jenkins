@@ -28,11 +28,28 @@ pipeline {
             }
         }
 
-        stage('Test Docker Image') {
-            steps {
-                bat 'docker run --rm %IMAGE_NAME%:build-%BUILD_NUMBER% --test'
-            }
-        }
+        stage('Test Docker API') {
+			steps {
+				bat '''
+				echo ===== Starting Test API Container =====
+
+				docker rm -f calsy-api-test 2>nul || echo No existing test container
+
+				docker run -d --name calsy-api-test -p 5001:8080 %IMAGE_NAME%:build-%BUILD_NUMBER%
+
+				echo ===== Waiting for Flask API =====
+				ping 127.0.0.1 -n 6 >nul
+
+				echo ===== Testing API =====
+				curl.exe -f "http://localhost:5001/calculate?a=10&b=2&op=*" 
+
+				echo.
+				echo ===== API Test Successful =====
+
+				docker rm -f calsy-api-test
+				'''
+			}
+		}
 
         stage('Login to Docker Hub') {
             steps {
