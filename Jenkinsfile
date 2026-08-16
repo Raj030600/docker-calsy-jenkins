@@ -57,6 +57,23 @@ pipeline {
                 bat 'docker push %DOCKER_REPO%:latest'
             }
         }
+		
+		stage('Deploy API') {
+			steps {
+				bat '''
+				echo ===== Deploying Calculator API =====
+
+				docker rm -f calsy-api 2>nul || echo No existing container found
+
+				docker pull %DOCKER_REPO%:latest
+
+				docker run -d --name calsy-api -p 5000:8080 %DOCKER_REPO%:latest
+
+				echo ===== Deployment Started =====
+				docker ps
+				'''
+			}
+		}
     }
 
     post {
