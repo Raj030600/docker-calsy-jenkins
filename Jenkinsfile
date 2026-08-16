@@ -104,7 +104,7 @@ pipeline {
             }
         }
 		
-		stage('Deploy API') {
+		stage('Deploy API1') {
 			steps {
 				bat '''
 				echo ===== Deploying Calculator API =====
